@@ -1,0 +1,3 @@
+[submodule "libs/cerealizer"]
+	path = libs/cerealizer
+	url = https://github.com/QQLKAA/cerealizer.git
