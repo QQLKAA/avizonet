@@ -16,7 +16,7 @@ add_library(avizonet
 
 target_include_directories(avizonet PUBLIC include)
 
-target_link_libraries(avizonet PUBLIC cerealizer)
+target_link_libraries(avizonet PUBLIC cerealizer ws2_32)
 
 if (AVIZONET_BUILD_EXAMPLES)
     add_subdirectory(examples)
