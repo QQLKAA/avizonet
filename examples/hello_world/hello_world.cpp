@@ -20,7 +20,7 @@ public:
                 addr.port);
 
         std::string message = "hello, world!\n";
-        SendRawPacket(id, (const uint8_t*)message.c_str(), message.size());
+        SendRawData(id, (const uint8_t*)message.c_str(), message.size());
     }
 
     virtual void OnClientDisconnect(uint32_t id) override
@@ -35,7 +35,20 @@ public:
         AvizoNet::TcpServer::OnRawDataReceive(id, buffer, size);
         std::printf("Client #%d sent %d bytes\n", id, size);
 
-        SendRawPacket(id, buffer, size);
+        for (uint32_t i = 0; i < _clients.size(); i++)
+        {
+            if (i == id || !_clients[i].connected)
+                continue;
+
+            SendRawData(i, buffer, size);
+        }
+    }
+
+    virtual void OnPacketReceive(uint32_t clientId, uint32_t packetId,
+            std::vector<uint8_t>&& body)
+    {
+        std::string message(body.begin(), body.end());
+        std::printf("Client #%d sent packet of id 0x%04X, length %d and content %s\n", clientId, packetId, body.size(), message.c_str());
     }
 };
 
